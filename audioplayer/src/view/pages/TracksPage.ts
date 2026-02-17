@@ -18,7 +18,9 @@ export class TracksPage {
   private pagination = new Pagination((p) => this.setPage(p));
 
   private page = 1;
+
   private query = "";
+
   private sortKey: SortKey = "title";
   private sortDir: SortDir = "asc";
 
@@ -61,7 +63,6 @@ export class TracksPage {
   }
 
   destroy(): void {
-    // на будущее: если будут подписки/слушатели — чистим тут
   }
 
   private getSortHint(): string {
@@ -88,9 +89,6 @@ export class TracksPage {
   }
 
   private async load(): Promise<void> {
-    this.list.innerHTML = "";
-    mount(this.list, el("div.tracks__empty", "Загрузка треков…"));
-
     try {
       if (store.tracks.length === 0) {
         const tracks = await getTracks();
@@ -98,16 +96,12 @@ export class TracksPage {
       }
 
       if (store.favorites.size === 0) {
-        try {
-          const fav = await getFavorites();
-          setState({ favorites: new Set(fav.map((t: Track) => t.id)) });
-        } catch {
-          // фавориты могут не грузиться если нет токена/бэкенд — не критично
-        }
+        const fav = await getFavorites();
+        setState({ favorites: new Set(fav.map((t: Track) => t.id)) });
       }
 
       this.render();
-    } catch {
+    } catch (e) {
       this.list.innerHTML = "";
       mount(
         this.list,
@@ -127,7 +121,6 @@ export class TracksPage {
   private getProcessedTracks(): Track[] {
     const q = this.query;
 
-    // 1) filter
     const filtered = q
       ? store.tracks.filter((t) => {
           const hay = `${t.title} ${t.album ?? ""} ${t.artist}`.toLowerCase();
@@ -135,7 +128,6 @@ export class TracksPage {
         })
       : store.tracks;
 
-    // 2) sort
     const sorted = [...filtered].sort((a, b) => {
       const av =
         (this.sortKey === "title" ? a.title : a.album ?? "").toLowerCase();
