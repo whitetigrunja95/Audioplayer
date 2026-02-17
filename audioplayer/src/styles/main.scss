@@ -314,3 +314,28 @@ h1{
   font-size: 13px;
 }
 
+.track-card__cols{
+  flex:1;
+  display:grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 12px;
+  min-width:0;
+}
+
+.track-card__col{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.track-card__col--title{
+  font-weight: 650;
+}
+
+.track-card__col--album{
+  color: var(--muted);
+  font-size: 13px;
+  text-align: left;
+}
+
+
