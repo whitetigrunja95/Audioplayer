@@ -17,19 +17,20 @@ export class TrackCard {
 
     this.el = el(
       "article.track-card",
+      { className: `track-card${isCurrent ? " track-card--current" : ""}` },
+
       el(
-        "button.track-card__main",
-        {
-          type: "button",
-          onclick: () => onPlay(track.id),
-        },
-        el("div.track-card__title", track.title),
-        el(
-          "div.track-card__meta",
-          `${track.artist}${track.album ? " • " + track.album : ""}`
-        ),
-        isCurrent ? el("div.track-card__badge", "Сейчас играет") : ""
+        "button.track-card__play",
+        { type: "button", onclick: () => onPlay(track.id) },
+        isCurrent ? "⏸" : "▶"
       ),
+
+      el(
+        "div.track-card__cols",
+        el("div.track-card__col track-card__col--title", track.title),
+        el("div.track-card__col track-card__col--album", track.album ?? "—")
+      ),
+
       el(
         "button.track-card__fav",
         {

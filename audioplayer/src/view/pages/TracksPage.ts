@@ -21,40 +21,41 @@ export class TracksPage {
   }
 
   destroy(): void {
-    // пока ничего
   }
 
-  private async load(): Promise<void> {
-    try {
-      // ✅ если треки уже есть — не делаем повторные запросы
-      if (store.tracks.length > 0) {
-        // но избранное всё равно можно подтянуть 1 раз, если пусто
-        if (store.favorites.size === 0) {
-          const fav = await getFavorites();
-          setState({ favorites: new Set(fav.map((t: Track) => t.id)) });
-        }
-        this.render();
-        return;
-      }
+ private async load(): Promise<void> {
 
+  this.list.innerHTML = "";
+  mount(this.list, el("div.tracks__empty", "Загрузка треков…"));
+
+  try {
+    if (store.tracks.length === 0) {
       const tracks = await getTracks();
       setState({ tracks });
-
-      const fav = await getFavorites();
-      setState({ favorites: new Set(fav.map((t: Track) => t.id)) });
-
-      this.render();
-    } catch (e) {
-      this.list.innerHTML = "";
-      mount(
-        this.list,
-        el(
-          "div.tracks__error",
-          "Не удалось загрузить треки. Проверь, что backend запущен на http://localhost:8000"
-        )
-      );
     }
+
+    if (store.favorites.size === 0) {
+      try {
+        const fav = await getFavorites();
+        setState({ favorites: new Set(fav.map((t: Track) => t.id)) });
+      } catch {
+
+      }
+    }
+
+    this.render();
+  } catch {
+    this.list.innerHTML = "";
+    mount(
+      this.list,
+      el(
+        "div.tracks__error",
+        "Не удалось загрузить треки. Проверь, что backend запущен на http://localhost:8000"
+      )
+    );
   }
+}
+
 
   private setPage(page: number): void {
     this.page = page;
@@ -87,16 +88,13 @@ export class TracksPage {
           setState({ currentTrackId: trackId });
         },
         onToggleFavorite: async (trackId: string, makeFav: boolean) => {
-          // оптимистично
           toggleFavoriteLocal(trackId, makeFav);
           try {
             if (makeFav) await addFavorite(trackId);
             else await removeFavorite(trackId);
           } catch {
-            // откат
             toggleFavoriteLocal(trackId, !makeFav);
           }
-          // перерисуем карточки текущей страницы
           this.render();
         },
       });

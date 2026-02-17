@@ -279,7 +279,10 @@ h1{
   .player__btn{ width: 40px; height: 40px; }
 }
 
+.tracks__title { margin-bottom: 10px; }
+
 .tracks__search{
+  display:block;
   width: 100%;
   max-width: 520px;
   padding: 12px 14px;
@@ -304,17 +307,10 @@ h1{
   border-radius: 999px;
   padding: 10px 14px;
   cursor:pointer;
-  box-shadow: 0 6px 16px rgba(0,0,0,.05);
 }
 
 .tracks__sort-hint{
   color: var(--muted);
   font-size: 13px;
-  padding-left: 4px;
 }
 
-.tracks__empty,
-.tracks__error{
-  padding: 16px;
-  color: var(--muted);
-}
