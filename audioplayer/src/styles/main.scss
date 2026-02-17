@@ -278,3 +278,21 @@ h1{
   .track-card{ padding: 12px; }
   .player__btn{ width: 40px; height: 40px; }
 }
+
+.track-card__top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.track-card__album{
+  flex: 0 0 auto;
+  color: var(--muted);
+  font-size: 13px;
+  white-space: nowrap;
+  padding: 6px 10px;
+  border: 1px solid var(--stroke);
+  border-radius: 999px;
+  background: rgba(17,17,20,.04);
+}
