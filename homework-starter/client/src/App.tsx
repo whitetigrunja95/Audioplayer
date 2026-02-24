@@ -7,8 +7,8 @@ import { NoteForm } from "./components/NoteForm";
 import { NotesListView } from "./components/NotesListView";
 import { PageSelector } from "./components/PageSelector";
 
-import { apiCreateNote, apiGetMe, apiLogout } from "./api/api";
-import type { MeResponse } from "./api/api";
+import { apiCreateNote, apiGetMe, apiLogout } from "./api";
+import type { MeResponse } from "./api";
 import { useNotes } from "./hooks/useNotes";
 import type { NoteFormValues } from "./validation/noteForm";
 
